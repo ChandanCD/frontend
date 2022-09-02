@@ -1,15 +1,16 @@
-<button type="button" *ngIf="isNew == true" (click)="onEditClick()" data-action-type="view" class="btn btn-default">
-  Edit
-</button>
+<span style="font-size: 2em;" *ngIf="isNew == true" (click)="onEditClick()" data-action-type="view" class="text-primary btn-space-10p icon-btn">
+  <i class="fa-regular fa-pen-to-square"></i>
+</span>
 
-<button type="button" *ngIf="isNew == false" (click)="onUpdateClick()" data-action-type="view" class="btn btn-default">
-  {{ componentParent == true ? 'Add' : 'Update' }}
-</button>
+<span style="font-size: 2em;" *ngIf="isNew == false" (click)="onUpdateClick()" data-action-type="view" class="text-success btn-space-10p icon-btn">
+  <!-- Add and Update -->
+  <i class="fa-regular fa-circle-check"></i> 
+</span>
 
-<button type="button" *ngIf="isNew == false" (click)="onCancelClick()" data-action-type="view" class="btn btn-default">
-  Cancel
-</button>
+<span style="font-size: 2em;"  *ngIf="isNew == false" (click)="onCancelClick()" data-action-type="view" class="text-danger btn-space-10p icon-btn">
+  <i class="fa-regular fa-circle-xmark"></i>
+</span>
 
-<button type="button" *ngIf="isNew == true" (click)="onDeleteClick()" data-action-type="remove" class="btn btn-default">
-  Delete
-</button>
+<span style="font-size: 2em;" *ngIf="isNew == true" (click)="onDeleteClick()" data-action-type="remove" class="text-danger icon-btn">
+  <i class="fa-regular fa-trash-can"></i>
+</span>
