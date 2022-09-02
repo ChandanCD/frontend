@@ -1,0 +1,18 @@
+<button (click)="addRowData()" class="btn btn-primary">Add New</button>
+
+<div style="height: 100%; box-sizing: border-box;">
+  <ag-grid-angular
+  #agGrid
+  style="width: 100%; height: 1000px;"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [editType]="editType"
+  [frameworkComponents]="frameworkComponents"
+  (gridReady)="onGridReady($event)"
+  [defaultColDef]="defaultColDef"
+  [immutableColumns] = "true"
+  [context]="context"
+  suppressClickEdit
+  ></ag-grid-angular>
+</div>
