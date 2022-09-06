@@ -21,11 +21,8 @@ interface CsvData {
 })
 export class AppComponent {
   title = 'frontend';
-  private gridApi!: { getCellRendererInstances: () => any; };
-  private gridColumnApi: any;
 
   public columnDefs: ColDef[];
-  
   public rowData: CsvData[] = [];
   public context: any;
   public frameworkComponents;
@@ -72,11 +69,6 @@ export class AppComponent {
     this.getAllData();
   }
 
-  onGridReady(params: { api: { getCellRendererInstances: () => any; }; columnApi: any; }) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-
-  }
 
   addRowData = () => {
     this.context.componentParent = true;
