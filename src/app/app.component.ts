@@ -68,10 +68,14 @@ export class AppComponent {
     this.getAllData();
   }
 
-
+  /*
+  Add new row in ag-grid table
+  and render updated data
+  */
   addRowData = () => {
     this.context.componentParent = true;
-    let newRowData = this.rowData.slice();
+    let newRowData = this.rowData.slice(); //get a shallow copy of old array into new one
+    // increament row number to one and append at the begining
     let newId =
       this.rowData.length === 0
         ? 0
@@ -84,6 +88,9 @@ export class AppComponent {
     this.rowData = newRowData;
   };
 
+  /*
+  subscribe to csvService and get csvData
+  */
   getAllData = () => {
     this.csvService.getCsvData().subscribe((data: CsvData[]) => {
       this.rowData = data;

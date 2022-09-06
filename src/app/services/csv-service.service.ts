@@ -26,27 +26,37 @@ export class CsvServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
+  /*
+  create new record in csv file
+  */
   create(data: any): Observable<CsvData[]> {
     return this.httpClient.post<CsvData[]>(this.apiServer + '/create', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  
+  /*
+  update data in csv 
+  stringify json and send data
+  */
   update(data: string): Observable<CsvData> {
     return this.httpClient.post<CsvData>(this.apiServer + '/update', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-
+  /*
+  delete data from csv based on row id
+  */
   delete(id: number){
     return this.httpClient.post<CsvData>(this.apiServer + '/delete/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-
+  /*
+  fetch latest data from csv file
+  */
   getCsvData(): Observable<CsvData[]> {
     return this.httpClient.get<CsvData[]>(this.apiServer + '/getdata')
     .pipe(
@@ -55,7 +65,10 @@ export class CsvServiceService {
   }
 
 
-
+  /*
+  function for error handling
+  takes two parameter - error and status
+  */
   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {
