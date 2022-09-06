@@ -1,18 +1,24 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CsvServiceService } from './csv-service.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('CsvServiceService', () => {
   let service: CsvServiceService;
+  let fakeHttpClient: jasmine.SpyObj<HttpClient>;
+
+  function createService() {
+    service = new CsvServiceService(
+      fakeHttpClient,
+    );
+  }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
-    });
-    service = TestBed.inject(CsvServiceService);
+    fakeHttpClient = jasmine.createSpyObj<HttpClient>('HttpClient', ['post', 'get']);
+
+    createService();
   });
 
-  it('should be created', () => {
+  it('should create', () => {
     expect(service).toBeTruthy();
   });
+
 });
