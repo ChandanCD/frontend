@@ -31,6 +31,7 @@ export class AppComponent {
   public frameworkComponents;
   public editType;
   public defaultColDef: ColDef;
+  public domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
 
   constructor(private csvService: CsvServiceService) {
     this.columnDefs = [
