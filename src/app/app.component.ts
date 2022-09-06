@@ -36,16 +36,15 @@ export class AppComponent {
     { field: 'id' },
     { field: 'name',  editable: true },
     { field: 'state' ,  editable: true},
-    { field: 'zip',  editable: true },
-    { field: 'amount',  editable: true },
-    { field: 'qty',  editable: true },
+    { field: 'zip',  editable: true , type: 'numericColumn'},
+    { field: 'amount',  editable: true , type: 'numericColumn'},
+    { field: 'qty',  editable: true , type: 'numericColumn' },
     { field: 'item',  editable: true },
-      {
+    {
         headerName: "Actions",
         field: "action",
-        cellRenderer: "rowEditCRenderer",
-        width: 200
-      }
+        cellRenderer: "rowEditCRenderer"
+    }
     ];
     
     this.editType = "fullRow";
