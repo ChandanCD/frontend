@@ -2,17 +2,7 @@ import { Component } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { ButtonRendererComponent } from './components/button-renderer/button-renderer.component';
 import { CsvServiceService } from './services/csv-service.service';
-
-
-interface CsvData {
-  id: number;
-  name: string;
-  state: string;
-  zip: number;
-  amount: number;
-  qty: number;
-  item: string
-}
+import { Csvdata } from './interfaces/csvdata';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +13,7 @@ export class AppComponent {
   title = 'frontend';
 
   public columnDefs: ColDef[];
-  public rowData: CsvData[] = [];
+  public rowData: Csvdata[] = [];
   public context: any;
   public frameworkComponents;
   public editType;
@@ -92,7 +82,7 @@ export class AppComponent {
   subscribe to csvService and get csvData
   */
   getAllData = () => {
-    this.csvService.getCsvData().subscribe((data: CsvData[]) => {
+    this.csvService.getCsvData().subscribe((data: Csvdata[]) => {
       this.rowData = data;
     })
   }

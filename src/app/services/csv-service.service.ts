@@ -1,16 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-
-interface CsvData {
-  id: number;
-  name: string;
-  state: string;
-  zip: number;
-  amount: number;
-  qty: number;
-  item: string
-}
+import { Csvdata } from '../interfaces/csvdata';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +20,8 @@ export class CsvServiceService {
   /*
   create new record in csv file
   */
-  create(data: any): Observable<CsvData[]> {
-    return this.httpClient.post<CsvData[]>(this.apiServer + '/create', JSON.stringify(data), this.httpOptions)
+  create(data: any): Observable<Csvdata[]> {
+    return this.httpClient.post<Csvdata[]>(this.apiServer + '/create', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -39,8 +30,8 @@ export class CsvServiceService {
   update data in csv 
   stringify json and send data
   */
-  update(data: string): Observable<CsvData> {
-    return this.httpClient.post<CsvData>(this.apiServer + '/update', JSON.stringify(data), this.httpOptions)
+  update(data: string): Observable<Csvdata> {
+    return this.httpClient.post<Csvdata>(this.apiServer + '/update', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -49,7 +40,7 @@ export class CsvServiceService {
   delete data from csv based on row id
   */
   delete(id: number){
-    return this.httpClient.post<CsvData>(this.apiServer + '/delete/' + id, this.httpOptions)
+    return this.httpClient.post<Csvdata>(this.apiServer + '/delete/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
@@ -57,8 +48,8 @@ export class CsvServiceService {
   /*
   fetch latest data from csv file
   */
-  getCsvData(): Observable<CsvData[]> {
-    return this.httpClient.get<CsvData[]>(this.apiServer + '/getdata')
+  getCsvData(): Observable<Csvdata[]> {
+    return this.httpClient.get<Csvdata[]>(this.apiServer + '/getdata')
     .pipe(
       catchError(this.errorHandler)
     )
