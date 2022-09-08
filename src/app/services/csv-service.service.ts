@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Csvdata } from '../interfaces/csvdata';
+import { Csvdata, DataEntity } from '../interfaces/csvdata';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,10 @@ import { Csvdata } from '../interfaces/csvdata';
 export class CsvServiceService {
   private apiServer = "http://localhost/backend/data";
 
+  /**
+   * Http options of csv service
+   * Content type json is allowed
+   */
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -20,46 +24,54 @@ export class CsvServiceService {
   /*
   create new record in csv file
   */
-  create(data: any): Observable<Csvdata[]> {
-    return this.httpClient.post<Csvdata[]>(this.apiServer + '/create', JSON.stringify(data), this.httpOptions)
+  create(data: any): Observable<Csvdata> {
+    return this.httpClient.post<Csvdata>(this.apiServer + '/create', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  /*
-  update data in csv 
-  stringify json and send data
-  */
-  update(data: string): Observable<Csvdata> {
-    return this.httpClient.post<Csvdata>(this.apiServer + '/update', JSON.stringify(data), this.httpOptions)
+
+  /**
+   * Update data in csv 
+   * @param data 
+   * @returns update 
+   */
+  update(data: string): Observable<DataEntity> {
+    return this.httpClient.post<DataEntity>(this.apiServer + '/update', JSON.stringify(data), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  /*
-  delete data from csv based on row id
-  */
+  
+  /**
+   * Delete data from csv based on row id
+   * @param id 
+   * @returns  
+   */
   delete(id: number){
     return this.httpClient.post<Csvdata>(this.apiServer + '/delete/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
-  /*
-  fetch latest data from csv file
-  */
-  getCsvData(): Observable<Csvdata[]> {
-    return this.httpClient.get<Csvdata[]>(this.apiServer + '/getdata')
+  
+  /**
+   * Gets csv data
+   * @returns csv data 
+   */
+  getCsvData(): Observable<Csvdata> {
+    return this.httpClient.get<Csvdata>(this.apiServer + '/getdata')
     .pipe(
       catchError(this.errorHandler)
     )
   }
-
-
-  /*
-  function for error handling
-  takes two parameter - error and status
-  */
+  
+  /**
+   * Errors handler
+   * function for error handling
+   * @param error 
+   * @returns  
+   */
   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

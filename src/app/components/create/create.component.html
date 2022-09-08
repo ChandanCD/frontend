@@ -1,0 +1,77 @@
+<div class="container scrollData">
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"> {{ toUpdate ? 'Update Post': 'Create Post' }}</h4>
+  </div>
+  <div class="modal-body">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+            <input type="hidden" 
+            placeholder="id" 
+            [ngModel]="fromParent.id"
+            formControlName="id"/>
+
+          <div class="form-group">
+              <label for="name">Name:</label>
+              <input formControlName="name" id="name" type="text" class="form-control" [(ngModel)]="fromParent.name">
+              <div *ngIf="!form.controls['name']?.valid && (form.controls['name']?.dirty ||form.controls['name']?.touched)"
+                  class="alert alert-danger">
+                  Name is not valid
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="state">State</label>
+              <input formControlName="state" id="state" type="text" class="form-control" [(ngModel)]="fromParent.state">
+              <div *ngIf="!form.controls['state']?.valid && (form.controls['state']?.dirty ||form.controls['state']?.touched)"
+                  class="alert alert-danger">
+                  State is not valid
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="zip">Zip Code</label>
+              <input formControlName="zip" id="zip" type="text" class="form-control" [(ngModel)]="fromParent.zip">
+              <div *ngIf="!form.controls['zip']?.valid && (form.controls['zip']?.dirty ||form.controls['zip']?.touched)"
+                  class="alert alert-danger">
+                  ZipCode is not valid
+              </div>
+              <div *ngIf="!form.controls['zip'].valid">
+                  Min length Required is 5
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="amount">Amount</label>
+              <input formControlName="amount" id="amount" type="text" class="form-control" [(ngModel)]="fromParent.amount">
+              <div *ngIf="!form.controls['amount']?.valid && (form.controls['amount']?.dirty ||form.controls['amount']?.touched)"
+                  class="alert alert-danger">
+                  Amount is not valid
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="qty">Qty</label>
+              <input formControlName="qty" id="qty" type="text" class="form-control" [(ngModel)]="fromParent.qty">
+              <div *ngIf="!form.controls['qty']?.valid && (form.controls['qty']?.dirty ||form.controls['qty']?.touched)"
+                  class="alert alert-danger">
+                  Qty is not valid
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="item">Item Number</label>
+              <input formControlName="item" id="item" type="text" class="form-control" [(ngModel)]="fromParent.item">
+              <div *ngIf="!form.controls['item']?.valid && (form.controls['item']?.dirty ||form.controls['item']?.touched)"
+                  class="alert alert-danger">
+                  Item Number is not valid
+              </div>
+              <div *ngIf="!form.controls['item'].valid">
+                  Min length Required is 2
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button  class="btn btn-primary" data-dismiss="modal" (mousedown)="closeModal('Close modal')">Close</button>
+              <button class="btn btn-primary" type="submit" [disabled]="!form.valid">{{ toUpdate ? 'Update': 'Submit' }}</button>
+          </div>
+      </form>
+  </div>
+</div>

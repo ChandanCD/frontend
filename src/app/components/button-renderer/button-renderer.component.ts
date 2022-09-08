@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams } from 'ag-grid-community';
 import { CsvServiceService } from 'src/app/services/csv-service.service';
+
+import { CreateComponent } from '../create/create.component';
+import { ToastService } from '../../services/toast.service';
 
 
 export interface CustomParams {
@@ -16,91 +19,83 @@ export class ButtonRendererComponent implements ICellRendererAngularComp {
   public params: any;
   public isNew: any;
   public addRow: any;
-  previousData: any;
-  componentParent: any = false;
+  public previousData: any;
+  public componentParent: any = false;
 
-  // gets called once before the renderer is used 
+  /**
+   * init
+   * @param params 
+   */
   agInit(params: any): void {
       this.params = params; 
   }
-  
-   constructor(private csvService: CsvServiceService) {
+   
+   /**
+    * Creates an instance of button renderer component.
+    * @param csvService 
+    * @param modalService 
+    */
+   constructor(
+    private csvService: CsvServiceService, 
+    private modalService: NgbModal,
+    public toastService: ToastService
+    ) {
       this.isNew = true;
       this.addRow = false;
   }
 
-  // gets called whenever the cell refreshes
+  /**
+   * Refreshs button renderer component
+   * @returns true if refresh 
+   */
   refresh(): boolean {
-      return false; // do not refresh table on cell edit
+      return false;
   }
   /*
   set all cell of current row into edit mode
   */
   onEditClick() {
-    this.componentParent = this.params.context.componentParent;
-
-    this.isNew = false;
-    // keep the existing data in previous data
-    // on cancel previous data can be restored
-    this.previousData = JSON.parse(JSON.stringify(this.params.node.data));
-    let cols = this.params.columnApi.getAllGridColumns();
-    let firstCol = {
-        "colId": ""
-    }
-    if (cols) {
-        firstCol = cols[0];
-    }
-    // current row index number
-    let rowIndex = this.params.node.rowIndex;
-    this.params.api.setFocusedCell(rowIndex, firstCol.colId);
-    // set current row into edit mode
-    this.params.api.startEditingCell({
-        rowIndex: rowIndex,
-        colKey: "nodeId"
+    const modalRef = this.modalService.open(CreateComponent,
+      { scrollable: true, size: "lg" });
+    
+    modalRef.componentInstance.toUpdate = true;
+    modalRef.componentInstance.fromParent = this.params.data;
+    modalRef.result.then((result) => {
+      console.log(result);
+    }, (reason) => {
     });
   }
-  /*
-  trigers stopediting 
-  based on parent context decide whether to update or add new data in csv
-  */
-  onUpdateClick() {
-    this.params.api.stopEditing();
-    this.isNew = true;
-    
-    if (this.componentParent) {
-      // create new record in csv
-      this.csvService.create(this.params.data).subscribe((data: any)=>{
-        console.info(data);
-      })
-      this.params.context.componentParent =  false;
-    }else{
-      this.csvService.update(this.params.data).subscribe((data: any)=>{
-        console.info(data);
-      })
-    }
-
-
-  }
-  /*
-  sets previous data back
-  triggers stop editing in ag-grid
-  */
-  public onCancelClick() {
-      this.isNew = true;
-      this.params.node.setData(this.previousData);
-      this.params.api.stopEditing(true);
-  }
   
-  /*
-  removes selected row from ag-grid
-  send post request to delete from csv file based on id
-  */
+  /**
+   * Deletes selected data from ag grid
+   * as well as from csv file
+   */
   onDeleteClick() {
     const selectedData = [this.params.node.data];
     this.params.api.applyTransaction({ remove: selectedData });
-    this.csvService.delete(selectedData[0].id).subscribe((data: any)=>{
-      console.info(data.message);
+    // calls to delete funtion
+    this.csvService.delete(selectedData[0].id).subscribe((response: any)=>{
+      if(response.success){
+        this.showSuccess('Post deleted successfully!');
+      }else{
+        this.showError('Failed to delete post');
+      }
     })
+  }
+
+  showSuccess(message: string) {
+    this.toastService.show(message, {
+      classname: 'bg-success text-light',
+      delay: 2000 ,
+      autohide: true,
+    });
+  }
+  showError(message: string) {
+    this.toastService.show(message, {
+      classname: 'bg-danger text-light',
+      delay: 2000 ,
+      autohide: true,
+    });
   }
 
 

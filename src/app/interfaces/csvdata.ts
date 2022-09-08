@@ -1,4 +1,8 @@
 export interface Csvdata {
+  success: boolean;
+  data?: (DataEntity)[] | null;
+}
+export interface DataEntity {
   id: number;
   name: string;
   state: string;
@@ -7,3 +11,4 @@ export interface Csvdata {
   qty: number;
   item: string
 }
+

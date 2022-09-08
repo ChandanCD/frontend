@@ -5,16 +5,25 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AppComponent } from './app.component';
 import { CsvServiceService } from './services/csv-service.service';
 import { ButtonRendererComponent } from './components/button-renderer/button-renderer.component';
+import { CreateComponent } from './components/create/create.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonRendererComponent
+    ButtonRendererComponent,
+    CreateComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
     AgGridModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [CsvServiceService],
   bootstrap: [AppComponent]
