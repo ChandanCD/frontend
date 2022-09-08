@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CsvServiceService } from 'src/app/services/csv-service.service';
  import {  NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Csvdata, DataEntity } from 'src/app/interfaces/csvdata';
+import { Csvdata } from 'src/app/interfaces/csvdata';
 
 import { ToastService } from '../../services/toast.service';
 
@@ -71,7 +71,7 @@ export class CreateComponent implements OnInit {
       if(response.success){
         this.showSuccess('Post created successfully!');
       }else{
-        this.showError('I am a success toast');
+        this.showError('Failed to create post');
       }
 
       this.activeModal.close('Post created successfully!');
