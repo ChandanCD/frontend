@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {  NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+
 import { CsvServiceService } from 'src/app/services/csv-service.service';
- import {  NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Csvdata } from 'src/app/interfaces/csvdata';
 
 import { ToastService } from '../../services/toast.service';
@@ -32,7 +35,8 @@ export class CreateComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private csvService: CsvServiceService,
-    public toastService: ToastService
+    public toastService: ToastService,
+    public router: Router
   ) { }
   
   /**
@@ -42,7 +46,7 @@ export class CreateComponent implements OnInit {
     
      this.form = new FormGroup({
       id: new FormControl(''),
-      name: new FormControl('', [Validators.required,Validators.minLength(2)]),
+      name: new FormControl('', [Validators.required,Validators.minLength(2),Validators.pattern("^[a-zA-Z ]+$")]),
       state: new FormControl('', [Validators.required,Validators.minLength(2),Validators.pattern("^[a-zA-Z ]+$")]),
       zip: new FormControl('', [Validators.required, Validators.pattern(/^(?:\d{5,6})$/)]), 
       amount: new FormControl('', [Validators.required,Validators.minLength(1), Validators.pattern(/[+-]?([0-9]*[.])?[0-9]+/)]),
@@ -58,6 +62,7 @@ export class CreateComponent implements OnInit {
   closeModal(sendData: string) {
     // A reference to the currently opened (active) modal, and invoke close function
     this.activeModal.close(sendData);
+    this.redirect("list");
   }
 
 
@@ -73,22 +78,22 @@ export class CreateComponent implements OnInit {
       }else{
         this.showError('Failed to create post');
       }
-
-      this.activeModal.close('Post created successfully!');
     })
     }else{
       this.csvService.update(this.form.value).subscribe((response: any)=>{
-        console.info(response);
         if(response.success){
           this.showSuccess('Post updated successfully!');
-          console.log(response.data);
         }else{
-          this.showError('Failed to update');
-          console.log(response.error);
+          const errorList = Object.values(response.error);
+          for (let errorItem of errorList) {
+            this.showError(`${ errorItem }`);
+          }
         }
       })
-      this.activeModal.close('Modal closed');
+      
     }
+
+    this.closeModal('Modal closed');
   }
 
   /**
@@ -113,4 +118,13 @@ export class CreateComponent implements OnInit {
       autohide: true,
     });
   }
+
+  /**
+   * Redirects create component
+   * @param route 
+   */
+  redirect(route: string) {
+    this.router.navigate([route]);
+  }
+    
 }
