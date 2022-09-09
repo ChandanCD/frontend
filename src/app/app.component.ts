@@ -48,9 +48,9 @@ export class AppComponent {
     { headerName: 'Id',field: 'id' },
     { headerName: 'Name', field: 'name' },
     { headerName: 'State',field: 'state' },
-    { headerName: 'Zip',field: 'zip', type: 'numericColumn'},
-    { headerName: 'Amount',field: 'amount', type: 'numericColumn'},
-    { headerName: 'Qty',field: 'qty', type: 'numericColumn' },
+    { headerName: 'Zip',field: 'zip' },
+    { headerName: 'Amount',field: 'amount'},
+    { headerName: 'Qty',field: 'qty' },
     { headerName: 'Item',field: 'item' },
     {
         headerName: "Actions",
