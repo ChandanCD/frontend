@@ -9,6 +9,7 @@ import { CreateComponent } from './components/create/create.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastComponent } from './components/toast/toast.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ToastComponent } from './components/toast/toast.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    AppRoutingModule,
   ],
   providers: [CsvServiceService],
   bootstrap: [AppComponent]
