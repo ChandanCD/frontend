@@ -23,7 +23,8 @@ export class AppComponent {
   public editType;
   public defaultColDef: ColDef;
   public domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
-  public tableTitle : string = "Online Test";
+  public tableTitle : string = "GreenIT Application Challenge";
+  public paginationPageSize: number = 10;
   
   /**
    * Creates an instance of app component.
@@ -43,14 +44,14 @@ export class AppComponent {
      */
     
     this.columnDefs = [
-    { headerName: 'nodeId', field: 'nodeId', valueGetter: `parseInt(node.id)` },
-    { field: 'id' },
-    { field: 'name',  editable: true },
-    { field: 'state' ,  editable: true},
-    { field: 'zip',  editable: true , type: 'numericColumn'},
-    { field: 'amount',  editable: true , type: 'numericColumn'},
-    { field: 'qty',  editable: true , type: 'numericColumn' },
-    { field: 'item',  editable: true },
+    { headerName: 'nodeId', field: 'nodeId', valueGetter: `parseInt(node.id)`, hide: true },
+    { headerName: 'Id',field: 'id' },
+    { headerName: 'Name', field: 'name' },
+    { headerName: 'State',field: 'state' },
+    { headerName: 'Zip',field: 'zip', type: 'numericColumn'},
+    { headerName: 'Amount',field: 'amount', type: 'numericColumn'},
+    { headerName: 'Qty',field: 'qty', type: 'numericColumn' },
+    { headerName: 'Item',field: 'item' },
     {
         headerName: "Actions",
         field: "action",
@@ -70,9 +71,13 @@ export class AppComponent {
      */
     this.defaultColDef = {
             sortingOrder: ["asc", "desc"],
-            sortable:true
+            sortable:true,
+            filter: true,
         };
 
+      /**
+       * ag grid context that can be passed to child component
+       */
       this.context = {
           componentParent: false
       }
@@ -104,10 +109,8 @@ export class AppComponent {
     modalRef.componentInstance.toUpdate = false;
     // intially send empty value to child
     modalRef.componentInstance.fromParent = {};
-    modalRef.result.then((result) => {
-      console.log(result);
-    }, (reason) => {
-    });
+    modalRef.result.then((response) => {
+    }, (reason) => {});
   }
 
   
