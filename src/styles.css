@@ -9,3 +9,30 @@
 .icon-btn{
   cursor: pointer;
 }
+body{
+  background: #26afd9;
+  /* 3BB6DD; */
+}
+
+/* set the background color of many elements across the grid
+--ag-background-color: rgb(173, 13, 13);
+ */
+.ag-theme-alpine {
+  --ag-header-background-color: #0D6EFD;
+}
+/* change the font style of a single UI component */
+.ag-theme-alpine .ag-header-cell-label {
+  justify-content: center;
+  font-size: large;
+  color: white;
+}
+
+.ag-theme-alpine .ag-cell, .ag-theme-alpine .ag-full-width-row .ag-cell-wrapper.ag-row-group {
+  /* text-align: justify; */
+  margin-left: 1.5%;
+}
+
+.ag-theme-alpine .ag-ltr .ag-header-select-all {
+  margin-left: 15%;
+}
+

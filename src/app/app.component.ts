@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ColDef } from 'ag-grid-community';
+import { CheckboxSelectionCallbackParams, ColDef, GridApi, HeaderCheckboxSelectionCallbackParams } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 import { ButtonRendererComponent } from './components/button-renderer/button-renderer.component';
 import { CsvServiceService } from './services/csv-service.service';
 import { Csvdata, DataEntity } from './interfaces/csvdata';
-import { CreateComponent } from './components/create/create.component';
+import { PopupComponent } from './components/popup/popup.component';
 
 @Component({
   selector: 'app-root',
@@ -25,14 +26,18 @@ export class AppComponent {
   public domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
   public tableTitle : string = "GreenIT Application Challenge";
   public paginationPageSize: number = 10;
+  public rowSelection: 'single' | 'multiple' = 'multiple';
+  private gridApi!: GridApi;
   
   /**
    * Creates an instance of app component.
    * @param csvService 
    * @param modalService 
+   * @param translate
    */
   constructor(private csvService: CsvServiceService, 
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    translate: TranslateService
     ) {
     /**
      * define each column in columnDefs
@@ -50,7 +55,7 @@ export class AppComponent {
     { headerName: 'State',field: 'state' },
     { headerName: 'Zip',field: 'zip' },
     { headerName: 'Amount',field: 'amount'},
-    { headerName: 'Qty',field: 'qty' },
+    { headerName: 'Quantity',field: 'quantity' },
     { headerName: 'Item',field: 'item' },
     {
         headerName: "Actions",
@@ -73,6 +78,8 @@ export class AppComponent {
             sortingOrder: ["asc", "desc"],
             sortable:true,
             filter: true,
+            headerCheckboxSelection: this.isFirstColumn,
+            checkboxSelection: this.isFirstColumn,
         };
 
       /**
@@ -81,6 +88,10 @@ export class AppComponent {
       this.context = {
           componentParent: false
       }
+
+      translate.addLangs(['en']);
+      translate.setDefaultLang('en');
+      translate.use('en');
   }
 
   ngOnInit() {
@@ -101,9 +112,9 @@ export class AppComponent {
    * @return {void} returns nothing
    */
    openModal = () => {
-    // open CreateComponent (modal component)
+    // open PopupComponent (modal component)
     // should be scrollable and large
-    const modalRef = this.modalService.open(CreateComponent,
+    const modalRef = this.modalService.open(PopupComponent,
       { scrollable: true, size: "lg" });
     
     modalRef.componentInstance.toUpdate = false;
@@ -111,6 +122,32 @@ export class AppComponent {
     modalRef.componentInstance.fromParent = {};
     modalRef.result.then((response) => {
     }, (reason) => {});
+  }
+
+  /**
+   * Determines whether grid ready on
+   * @param params 
+   */
+  onGridReady(params: { api: GridApi<any>; }) {
+    this.gridApi = params.api;
+  }
+
+  isFirstColumn(
+    params:
+      | CheckboxSelectionCallbackParams
+      | HeaderCheckboxSelectionCallbackParams
+  ) {
+    var displayedColumns = params.columnApi.getAllDisplayedColumns();
+    var thisIsFirstColumn = displayedColumns[0] === params.column;
+    return thisIsFirstColumn;
+  }
+
+  deleteSelectedOrder(){
+    const selectedData = this.gridApi.getSelectedRows();
+    this.gridApi.applyTransaction({ remove: selectedData });
+    this.csvService.multipleOrderDelete(selectedData).subscribe((data: any)=>{
+      console.info(data.message);
+    });
   }
 
   

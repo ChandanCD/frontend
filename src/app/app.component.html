@@ -6,8 +6,14 @@
     <div class="col d-flex justify-content-center">
      <h2> {{tableTitle}} </h2>
     </div>
-    <div class="col d-flex justify-content-around">
-        <button class="btn btn-outline-primary" (click)="openModal()">Add New</button>
+    <div class="col d-flex justify-content-center"> <!-- col d-flex justify-content-around-->
+        <button class="btn btn-primary" (click)="openModal()">Add New
+          <i class="fa-regular fa-square-plus"></i>
+        </button>
+        &nbsp;
+        <button class="btn btn-danger" (click)="deleteSelectedOrder()">Delete
+          <i class="fa-regular fa-square-minus"></i>
+        </button>
     </div>
   </div>
 
@@ -21,6 +27,7 @@
     class="ag-theme-alpine"
     [columnDefs]="columnDefs"
     [rowData]="rowData"
+    [rowSelection]="rowSelection"
     [editType]="editType"
     [frameworkComponents]="frameworkComponents"
     [domLayout]="domLayout"
@@ -29,6 +36,7 @@
     [pagination]="true"
     [paginationPageSize]="paginationPageSize"
     [context]="context"
+    (gridReady)="onGridReady($event)"
     suppressClickEdit
     ></ag-grid-angular>
   </div>

@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { CsvServiceService } from 'src/app/services/csv-service.service';
 
-import { CreateComponent } from '../create/create.component';
+import { PopupComponent } from '../popup/popup.component';
 import { ToastService } from '../../services/toast.service';
 
 
@@ -56,7 +56,7 @@ export class ButtonRendererComponent implements ICellRendererAngularComp {
   set all cell of current row into edit mode
   */
   onEditClick() {
-    const modalRef = this.modalService.open(CreateComponent,
+    const modalRef = this.modalService.open(PopupComponent,
       { scrollable: true, size: "lg" });
     
     modalRef.componentInstance.toUpdate = true;
@@ -66,39 +66,5 @@ export class ButtonRendererComponent implements ICellRendererAngularComp {
     }, (reason) => {
     });
   }
-  
-  /**
-   * Deletes selected data from ag grid
-   * as well as from csv file
-   */
-  onDeleteClick() {
-    const selectedData = [this.params.node.data];
-    this.params.api.applyTransaction({ remove: selectedData });
-    // calls to delete funtion
-    this.csvService.delete(selectedData[0].id).subscribe((response: any)=>{
-      if(response.success){
-        this.showSuccess('Post deleted successfully!');
-      }else{
-        this.showError('Failed to delete post');
-      }
-    })
-  }
-
-  showSuccess(message: string) {
-    this.toastService.show(message, {
-      classname: 'bg-success text-light',
-      delay: 2000 ,
-      autohide: true,
-    });
-  }
-  showError(message: string) {
-    this.toastService.show(message, {
-      classname: 'bg-danger text-light',
-      delay: 2000 ,
-      autohide: true,
-    });
-  }
-
-
 
 }

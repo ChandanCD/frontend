@@ -4,17 +4,15 @@ import {  NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 import { CsvServiceService } from 'src/app/services/csv-service.service';
-
 import { Csvdata } from 'src/app/interfaces/csvdata';
-
 import { ToastService } from '../../services/toast.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  selector: 'app-popup',
+  templateUrl: './popup.component.html',
+  styleUrls: ['./popup.component.css']
 })
-export class CreateComponent implements OnInit {
+export class PopupComponent implements OnInit {
 
   /**
    * get fromParent data from parent component
@@ -24,8 +22,9 @@ export class CreateComponent implements OnInit {
 
   form!: FormGroup;
 
-  show = false;
-  autohide = true;
+  public show = false;
+  // public autohide = true;
+  public isFormEdited: boolean = false;
 
   /**
    * Creates an instance of create component.
@@ -50,9 +49,11 @@ export class CreateComponent implements OnInit {
       state: new FormControl('', [Validators.required,Validators.minLength(2),Validators.pattern("^[a-zA-Z ]+$")]),
       zip: new FormControl('', [Validators.required, Validators.pattern(/^(?:\d{5,6})$/)]), 
       amount: new FormControl('', [Validators.required,Validators.minLength(1), Validators.pattern(/[+-]?([0-9]*[.])?[0-9]+/)]),
-      qty: new FormControl('', [Validators.required,Validators.minLength(1), Validators.pattern(/^(?:\d{1,})$/)]),
+      quantity: new FormControl('', [Validators.required,Validators.minLength(1), Validators.pattern(/^(?:\d{1,})$/)]),
       item: new FormControl('', [Validators.required,Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9]{3,10}$/)]),
     });
+
+    this.onFormValueChange();
   }
 
   /**
@@ -125,6 +126,28 @@ export class CreateComponent implements OnInit {
    */
   redirect(route: string) {
     this.router.navigate([route]);
+  }
+
+  /**
+   * Determines whether form value change on
+   */
+  onFormValueChange() {
+    const initialValue = this.fromParent;
+    this.form.valueChanges.subscribe(value => {
+      this.isFormEdited = Object.keys(initialValue).some((key) =>{
+        // initialValue should not be null , undefined
+        if((initialValue[key])) {
+          
+          if( (initialValue[key]).trim() !== (this.form.value[key]).trim() ){
+            return true
+          }
+        
+        }
+
+        return false;
+        
+      });
+    });
   }
     
 }

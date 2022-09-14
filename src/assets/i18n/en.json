@@ -1,0 +1,19 @@
+{
+  "popup-form":{
+    "header": {
+      "update-order": "Update Order",
+      "create-order": "Create Order"
+    },
+    "error-message": {
+      "name": "Name must be in Letters",
+      "state": "State must be in Letters",
+      "zip-code": "ZipCode must be numbers and length must be 5 or 6 ",
+      "amount": "Amount must be in decimal format e.g - 10.00",
+      "quantity": "Quantity must be in numbers",
+      "item": "Item must contain letters and numbers and length must be between 2 to 10."
+    },
+    "success-message": {
+
+    }
+  }
+}

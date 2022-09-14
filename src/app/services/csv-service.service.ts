@@ -65,6 +65,14 @@ export class CsvServiceService {
       catchError(this.errorHandler)
     )
   }
+
+  multipleOrderDelete(selectedOrder: DataEntity[]){
+    return this.httpClient.post<Csvdata>(this.apiServer + '/deleteMultipleOrders',  JSON.stringify(selectedOrder), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   
   /**
    * Errors handler
